@@ -22,11 +22,19 @@ auth.get('/my-trips', ensureLogin.ensureLoggedIn(), (req, res, next) => {
   console.log("DEBUG TRIP ", res.body);
   console.log("DEBUG PHOTO ", req.file);
   console.log("DEBUG FIND ", Trip.findById("59d672c297abbcc62dfa0aa4"));
-  res.render('my-trips', {user: req.user, trip: req.body, photo: req.file});
-  next();
+  // Trip.findById("59d7847ba5f5eb74fe289e53", (err, trip) => {
+  //   res.render('my-trips', {user: req.user, trip: trip, photo: req.file});
+  // });
+
+  // Trip.find({userID: req.user._id}, (err, trips) => {
+  //   res.render('my-trips', {user: req.user, trips: trips, photo: req.file});
+  // });
+  Trip.find({userID: req.user._id}).populate('userID').populate('friends').exec((err, trips) => {
+    res.render('my-trips', {user: req.user, trips: trips, photo: req.file});
+  });
 });
 
-// UPLOAD PHOTOS
+// UPLOAD PHOTOS@
 
 auth.post('/my-trips', upload.single('photo'), (req, res, next) => {
 
@@ -47,7 +55,8 @@ auth.post('/my-trips', upload.single('photo'), (req, res, next) => {
     console.log("DEBUG TWO ", userID, tripDestination, tripReview, tripPhotoPath, tripPhotoName);
 
     newTrip.save((err) => {
-      res.render('my-trips', {userID, tripDestination, tripReview, tripPhotoPath, tripPhotoName});
+      res.redirect('my-trips');
+      // res.render('my-trips', {userID, tripDestination, tripReview, tripPhotoPath, tripPhotoName});
     });
 
 

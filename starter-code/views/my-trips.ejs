@@ -3,11 +3,13 @@
 <h2>Your past trips</h2>
 
 <section>
-
-
-
-
-    </div>
+    <pre>
+<%= JSON.stringify(trips, null, 4) %>
+    </pre>
+<% for (var i = 0; i < trips.length; i++) { %>
+    <h3>> <%= trips[i].tripDestination %></h3>
+    <img src="<%= trips[i].tripPhotoPath %>" height="100" alt="">
+<% } %>
 </section>
 
 <br>

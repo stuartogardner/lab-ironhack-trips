@@ -2,7 +2,8 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const tripSchema = new Schema({
-  userID: String,
+  userID: { type: Schema.Types.ObjectId, ref: 'User' },
+  friends: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   tripDestination: String,
   tripReview: String,
   tripPhotoPath: String,
